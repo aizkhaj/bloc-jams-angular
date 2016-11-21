@@ -49,6 +49,16 @@
         };
         
         /**
+        * @function stopSong
+        * @desc private function to stop songs
+        * @param {Object} song
+        */
+        var stopSong = function(song) {
+            currentBuzzObject.stop();
+            song.playing = null;
+        };
+        
+        /**
         * @function getSongIndex
         * @desc gets the index of a song from its album.
         * @param song
@@ -99,10 +109,29 @@
         SongPlayer.previous = function(song) {
             var currentSongIndex = getSongIndex(SongPlayer.currentSong);
             currentSongIndex--;
-            
+           
             if (currentSongIndex < 0) {
-                currentBuzzObject.stop();
-                SongPlayer.currentSong.playing = null;
+                setSong(song);
+                stopSong(song);
+            } else {
+                var song = currentAlbum.songs[currentSongIndex];
+                setSong(song);
+                playSong(song);
+            }
+        };
+        
+        /**
+        * @function SongPlayer.next
+        * @desc provides user ability to go to next song, this func will be passed into a click directive.
+        * @param {Object} song
+        */
+        SongPlayer.next = function(song) {
+            var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+            currentSongIndex++;
+            
+           if (currentSongIndex > currentAlbum.songs.length) {
+                setSong(song);
+                stopSong(song);
             } else {
                 var song = currentAlbum.songs[currentSongIndex];
                 setSong(song);
