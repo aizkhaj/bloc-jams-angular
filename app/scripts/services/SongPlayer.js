@@ -1,5 +1,5 @@
 (function() {
-    function SongPlayer() {
+    function SongPlayer(Fixtures) {
         
         /**
         * @desc we declare an empty object assigning it to SongPlayer
@@ -8,10 +8,10 @@
         var SongPlayer = {};
         
         /**
-        * @desc holds current song from the clicked directive passed into this variable from the relative public functions.
-        * @type {Object}
+        * @desc keep track of current album, from Fixtures.js
+        * @type {Function}
         */
-        var currentSong = null;
+        var currentAlbum = Fixtures.getAlbum();
         
         /**
         * @desc Buzz object audio file
@@ -27,7 +27,7 @@
         var setSong = function(song) {
             if (currentBuzzObject) {
                 currentBuzzObject.stop();
-                currentSong.playing = null;
+                SongPlayer.currentSong.playing = null;
             }
             
             currentBuzzObject = new buzz.sound(song.audioUrl, {
@@ -35,7 +35,7 @@
                 preload: true
             });
             
-            currentSong = song;
+            SongPlayer.currentSong = song;
         };
         
         /**
@@ -49,15 +49,31 @@
         };
         
         /**
+        * @function getSongIndex
+        * @desc gets the index of a song from its album.
+        * @param song
+        */
+        var getSongIndex = function(song) {
+            return currentAlbum.songs.indexOf(song);
+        };
+        
+        /**
+        * @desc holds current song from the clicked directive passed into this variable from the relative public functions.
+        * @type {Object}
+        */
+        SongPlayer.currentSong = null;
+        
+        /**
         * @function SongPlayer.play
         * @desc allows the user to engage the clicking directive that plays a targeted song.
         * @param {Object} song
         */
         SongPlayer.play = function(song) {
-            if (currentSong !== song) {
+            song = song || SongPlayer.currentSong;
+            if (SongPlayer.currentSong !== song) {
                 setSong(song);
                 playSong(song);
-            } else if (currentSong === song) {
+            } else if (SongPlayer.currentSong === song) {
                 if (currentBuzzObject.isPaused()) {
                     currentBuzzObject.play();
                 }
@@ -70,8 +86,28 @@
         * @param {Object} song
         */
         SongPlayer.pause = function(song) {
+            song = song || SongPlayer.currentSong;
             currentBuzzObject.pause();
             song.playing = false;
+        };
+        
+        /**
+        * @function SongPlayer.previous
+        * @desc provides user ability to go to previous song, this func will be passed into a click directive.
+        * @param {Object} song
+        */
+        SongPlayer.previous = function(song) {
+            var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+            currentSongIndex--;
+            
+            if (currentSongIndex < 0) {
+                currentBuzzObject.stop();
+                SongPlayer.currentSong.playing = null;
+            } else {
+                var song = currentAlbum.songs[currentSongIndex];
+                setSong(song);
+                playSong(song);
+            }
         };
         
         return SongPlayer;
