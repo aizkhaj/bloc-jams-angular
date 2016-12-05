@@ -69,11 +69,11 @@
                     });
                 };
 					
-					var notifyOnChange = function(newValue) {
-						if (typeof scope.onChange === 'function') {
-							scope.onChange({value: newValue});
-						}
-					};
+				var notifyOnChange = function(newValue) {
+					if (typeof scope.onChange === 'function') {
+						scope.onChange({value: newValue});
+					}
+				};
             }
         };
     }
