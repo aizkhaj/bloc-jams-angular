@@ -43,14 +43,14 @@
                     return {width: percentString()};
                 };
 							
-					 scope.thumbStyle = function() {
-						return {left: percentString()};
-					 };
+				scope.thumbStyle = function() {
+					return {left: percentString()};
+				};
                 
                 scope.onClickSeekBar = function(event) {
                     var percent = calculatePercent(seekBar, event);
                     scope.value = percent * scope.max;
-						  notifyOnChange(scope.value);
+					notifyOnChange(scope.value);
                 };
                 
                 scope.trackThumb = function() {
@@ -58,7 +58,7 @@
                         var percent = calculatePercent(seekBar, event);
                         scope.$apply(function() {
                         	scope.value = percent * scope.max;
-									notifyOnChange(scope.value);
+							notifyOnChange(scope.value);
                         });
                     });
                     

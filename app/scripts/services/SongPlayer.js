@@ -79,12 +79,18 @@
         */
         SongPlayer.currentSong = null;
         
-		  /**
-		  * @desc Current playback time (in seconds) of currently playing song
-		  * @type {Number}
-		  */
-		  SongPlayer.currentTime = null;
-		 
+		/**
+		* @desc Current playback time (in seconds) of currently playing song
+		* @type {Number}
+		*/
+		SongPlayer.currentTime = null;
+		
+	    /**
+		* @desc Holds volume of current song.
+		* @type {Number}
+		*/
+	    SongPlayer.volume = 80;
+	    
         /**
         * @function SongPlayer.play
         * @desc allows the user to engage the clicking directive that plays a targeted song.
@@ -160,6 +166,12 @@
 			 if (currentBuzzObject) {
 				 currentBuzzObject.setTime(time);
 			 }
+		 };
+	   
+	     SongPlayer.setVolume = function(volume) {
+		 	if (currentBuzzObject) {
+			   currentBuzzObject.setVolume(volume);
+			}	
 		 };
         
         return SongPlayer;
